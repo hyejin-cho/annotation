@@ -68,5 +68,29 @@ sub _parse_line {
    $self->{GTYPE} = \%gtypes;
 }
 
+sub remove_info_id {
+   my $self = shift;
+   my $id = shift;
+   
+   my $line='';
+   for my $info (split(/;/, $self->{INFO})) {
+      my ($key,$val) = split/=/,$info;
+
+      #remove field if ID is matched with given $id
+      $line .= $info.";" unless $id eq $key;
+   }
+   $self->{INFO} = $line; #replace after removal
+   return $self;
+}
+
+sub add_info_field {
+   my $self=shift;
+   my $add_key = shift;
+   my $add_val = shift;
+   $self->{INFO} .= $add_key."=".$add_val;
+  
+   return $self->{INFO};
+}
+
 1;
 
